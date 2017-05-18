@@ -1,0 +1,19 @@
+version: '2'
+services:
+  haproxy_exporter:
+    image: quay.io/prometheus/haproxy-exporter
+    entrypoint:
+      - /bin/sh
+    command:
+      - -c
+      - cp /bin/haproxy_exporter /exec/haproxy_exporter
+    volumes:
+      - /exec
+  hade:
+    build: ./
+    volumes_from:
+      - haproxy_exporter
+    environment:
+      - RESOLVE_TYPE=rancher
+    ports:
+      - 9101:9101
