@@ -1,6 +1,6 @@
 # Haproxy Autodiscovery Exporter (hade)
 
-auto discovery all haproxy docker containers by url, and run official `prometheus/haproxy-exporter` process for all haproxy nodes with `alias` by ip or dns name fo rancher
+auto discovery all haproxy docker containers by url, and run official `prometheus/haproxy-exporter` process for all haproxy nodes with `alias` by ip or dns name fo rancher, work with this [grafana dashboard](https://grafana.com/dashboards/364)
 
 ```yaml
 version: '2'
