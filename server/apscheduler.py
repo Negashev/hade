@@ -23,6 +23,12 @@ class Config(object):
             'func': 'server.clean_db:clean_db',
             'trigger': 'interval',
             'seconds': 20
+        },
+        {
+            'id': 'metrics_collector',
+            'func': 'server.metrics_collector:metrics_collector',
+            'trigger': 'interval',
+            'seconds': 5
         }
     ]
 

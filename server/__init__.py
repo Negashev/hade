@@ -22,3 +22,4 @@ db = SQLAlchemy(app)
 app.haproxy = {}
 app.prom = {}
 app.haproxy_url = urlparse(os.getenv('DOMAIN'))
+app.metrics = {}
