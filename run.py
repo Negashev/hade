@@ -25,9 +25,10 @@ class CustomCollector(object):
                                            'process_open_fds',
                                            'process_fake_namespace']:
                         continue
-                    g = GaugeMetricFamily(i.samples[0][0], i.documentation, labels=['alias'])
-                    g.add_metric([hostname], value=i.samples[0][2])
-                    yield g
+                    for item in i.samples:
+                        g = GaugeMetricFamily(item[0], i.documentation, labels=list(item[1].keys()) + ['alias'])
+                        g.add_metric(list(item[1].values()) + [hostname], value=int(item[2]))
+                        yield g
             else:
                 log.error(f'error response {proc_id}')
                 db.session.add(Zombie(proc_id))
