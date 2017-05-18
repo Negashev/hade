@@ -10,6 +10,7 @@ from server import app
 
 class CustomCollector(object):
     def collect(self):
+        metricsFamily = {}
         for hostname in app.metrics.keys():
             for i in text_string_to_metric_families(app.metrics[hostname]):
                 if i.samples[0][0] in ['process_cpu_seconds_total',
@@ -21,9 +22,12 @@ class CustomCollector(object):
                                        'process_fake_namespace']:
                     continue
                 for item in i.samples:
-                    g = GaugeMetricFamily(item[0], i.documentation, labels=list(item[1].keys()) + ['alias'])
-                    g.add_metric(list(item[1].values()) + [hostname], value=item[2])
-                    yield g
+                    if item[0] not in metricsFamily.keys():
+                        metricsFamily[item[0]] = GaugeMetricFamily(item[0], i.documentation, labels=list(item[1].keys()) + ['alias'])
+                    metricsFamily[item[0]].add_metric(list(item[1].values()) + [hostname], value=item[2])
+
+        for key in metricsFamily.keys():
+            yield metricsFamily[key]
 
 
 REGISTRY.register(CustomCollector())
