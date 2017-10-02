@@ -60,8 +60,8 @@ class RunCmd(threading.Thread):
     def run(self):
         self.proc = subprocess.Popen([
             "/exec/haproxy_exporter",
-            f"-haproxy.scrape-uri=http://{self.ip}:{app.haproxy_url.port}{app.haproxy_url.path}?{app.haproxy_url.query}",
-            f"-web.listen-address=:{self.exporter_port}"
+            f"--haproxy.scrape-uri=http://{self.ip}:{app.haproxy_url.port}{app.haproxy_url.path}?{app.haproxy_url.query}",
+            f"--web.listen-address=:{self.exporter_port}"
         ], shell=False)
 
     def stop(self):
