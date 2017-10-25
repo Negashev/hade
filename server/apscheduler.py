@@ -1,3 +1,6 @@
+import os
+
+
 class Config(object):
     JOBS = [
         {
@@ -28,7 +31,7 @@ class Config(object):
             'id': 'metrics_collector',
             'func': 'server.metrics_collector:metrics_collector',
             'trigger': 'interval',
-            'seconds': 5
+            'seconds': int(os.getenv('METRICS_COLLECTOR_INTERVAL', 5))
         }
     ]
 

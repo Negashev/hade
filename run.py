@@ -1,4 +1,5 @@
 import os
+import re
 
 from flask_apscheduler import APScheduler
 from prometheus_client.core import REGISTRY, GaugeMetricFamily
@@ -22,9 +23,20 @@ class CustomCollector(object):
                                        'process_fake_namespace']:
                     continue
                 for item in i.samples:
+                    domainKey = []
+                    domainValue = []
+                    if os.environ.get('DOMAIN_PARSE') is not None:
+                        if 'backend' in item[1]:
+                            searched = re.search(f'{os.getenv("LISTEN_PORT", 80)}_(.*)_{os.getenv("DOMAIN_PARSE")}', item[1]['backend'], re.IGNORECASE)
+                            if searched:
+                                find_subdomain = searched.group(1)
+                                if os.environ.get('UNDERSCORE_REPLACE') is not None:
+                                    find_subdomain = find_subdomain.replace('_', os.getenv("UNDERSCORE_REPLACE"))
+                                domainKey = ['domain']
+                                domainValue = [find_subdomain]
                     if item[0] not in metricsFamily.keys():
-                        metricsFamily[item[0]] = GaugeMetricFamily(item[0], i.documentation, labels=list(item[1].keys()) + ['alias'])
-                    metricsFamily[item[0]].add_metric(list(item[1].values()) + [hostname], value=item[2])
+                        metricsFamily[item[0]] = GaugeMetricFamily(item[0], i.documentation, labels=list(item[1].keys()) + ['alias'] + domainKey)
+                    metricsFamily[item[0]].add_metric(list(item[1].values()) + [hostname] + domainValue, value=item[2])
 
         for key in metricsFamily.keys():
             yield metricsFamily[key]
