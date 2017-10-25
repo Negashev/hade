@@ -5,7 +5,7 @@ WORKDIR /dist
 
 CMD ["python", "run.py"]
 
-RUN pip install \
+RUN pip install --no-cache-dir \
     flask \
     flask-sqlalchemy \
     flask-apscheduler \
