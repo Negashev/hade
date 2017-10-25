@@ -23,8 +23,8 @@ class CustomCollector(object):
                                        'process_fake_namespace']:
                     continue
                 for item in i.samples:
-                    domainKey = []
-                    domainValue = []
+                    domainKey = ['environment']
+                    domainValue = ['*']
                     if os.environ.get('DOMAIN_PARSE') is not None:
                         if 'backend' in item[1]:
                             searched = re.search(f'{os.getenv("LISTEN_PORT", 80)}_(.*)_{os.getenv("DOMAIN_PARSE")}', item[1]['backend'], re.IGNORECASE)
