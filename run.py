@@ -32,7 +32,7 @@ class CustomCollector(object):
                                 find_subdomain = searched.group(1)
                                 if os.environ.get('UNDERSCORE_REPLACE') is not None:
                                     find_subdomain = find_subdomain.replace('_', os.getenv("UNDERSCORE_REPLACE"))
-                                domainKey = ['domain']
+                                domainKey = ['environment']
                                 domainValue = [find_subdomain]
                     if item[0] not in metricsFamily.keys():
                         metricsFamily[item[0]] = GaugeMetricFamily(item[0], i.documentation, labels=list(item[1].keys()) + ['alias'] + domainKey)
