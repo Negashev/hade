@@ -5,7 +5,7 @@ auto discovery all haproxy docker containers by url, and run official `prometheu
 ```yaml
 version: '2'
 services:
-  haproxy_exporter:
+  haproxy-exporter:
     image: quay.io/prometheus/haproxy-exporter
     entrypoint:
       - /bin/sh
@@ -17,7 +17,7 @@ services:
   hade:
     image: negash/hade
     volumes_from:
-      - haproxy_exporter
+      - haproxy-exporter
     environment:
       - DOMAIN=http://haproxy.service.dc1.consul:9000/?stats;csv
     ports:
